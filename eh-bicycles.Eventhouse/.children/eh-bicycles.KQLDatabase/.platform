@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "KQLDatabase",
+    "displayName": "eh-bicycles"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "979d2430-119c-bc3e-421e-9018bdf7c1e1"
+  }
+}

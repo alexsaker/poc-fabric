@@ -1,0 +1,22 @@
+{
+  "queryset": {
+    "version": "1.0.0",
+    "dataSources": [
+      {
+        "id": "26fd127e-9932-45be-b752-be44538337c7",
+        "clusterUri": "",
+        "type": "Fabric",
+        "databaseItemId": "979d2430-119c-bc3e-421e-9018bdf7c1e1"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "36a6cff1-0836-49a4-abee-97a0e4af07ab",
+        "content": "//***********************************************************************************************************\n// Here are two articles to help you get started with KQL:\n// KQL reference guide - https://aka.ms/KQLguide\n// SQL - KQL conversions - https://aka.ms/sqlcheatsheet\n//***********************************************************************************************************\n\n bikes\n | where ingestion_time() between (now(-1d) .. now())\n\n",
+        "title": "Tab",
+        "dataSourceId": "26fd127e-9932-45be-b752-be44538337c7"
+      }
+    ],
+    "querysetType": "Standalone"
+  }
+}

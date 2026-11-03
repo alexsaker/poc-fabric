@@ -1,0 +1,82 @@
+{
+  "schema_version": 90,
+  "flavor": "RTDashboard_Regular",
+  "changeDetection": {
+    "kind": "liveUpdates",
+    "minRefreshRate": "30s",
+    "fallbackRefreshRate": "1m",
+    "minRefreshRate_V2": "30s"
+  },
+  "tiles": [
+    {
+      "id": "4cac3859-6ffc-411b-9650-6f1050a1a0c0",
+      "title": "New Tile",
+      "visualType": "table",
+      "pageId": "62cdf142-b96b-47d0-813a-993713a26a06",
+      "layout": {
+        "width": 9,
+        "height": 7,
+        "x": 0,
+        "y": 0
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "0d0878ad-48ff-4a78-8ada-554d41b16cf9"
+      },
+      "visualOptions": {
+        "selectedDataOnLoad": {
+          "all": true,
+          "limit": 10
+        }
+      }
+    }
+  ],
+  "baseQueries": [],
+  "parameters": [
+    {
+      "kind": "duration",
+      "id": "4fde1220-cfd8-42ef-bb7d-88f6a678f709",
+      "displayName": "Time range",
+      "description": "",
+      "beginVariableName": "_startTime",
+      "endVariableName": "_endTime",
+      "defaultValue": {
+        "kind": "dynamic",
+        "count": 1,
+        "unit": "hours"
+      },
+      "showOnPages": {
+        "kind": "all"
+      }
+    }
+  ],
+  "dataSources": [
+    {
+      "id": "44e6f60f-d143-40f3-9978-ca4be0fa48a0",
+      "kind": "kusto-trident",
+      "name": "eh-bicycles",
+      "clusterUri": "",
+      "databaseArtifactId": "bdf7c1e1-9018-421e-bc3e-119c979d2430",
+      "database": "979d2430-119c-bc3e-421e-9018bdf7c1e1",
+      "workspace": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+  "pages": [
+    {
+      "name": "Page 1",
+      "id": "62cdf142-b96b-47d0-813a-993713a26a06"
+    }
+  ],
+  "queries": [
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "44e6f60f-d143-40f3-9978-ca4be0fa48a0"
+      },
+      "text": " ['bikes-by-street']\n | summarize TotalBikes = sum(tolong(SUM_No_Bikes)) by Window_End_Time, Street\n | sort by Window_End_Time desc , Street asc",
+      "id": "0d0878ad-48ff-4a78-8ada-554d41b16cf9",
+      "usedVariables": []
+    }
+  ],
+  "embeddedApps": []
+}

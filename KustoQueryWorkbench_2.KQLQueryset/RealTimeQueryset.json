@@ -1,0 +1,22 @@
+{
+  "queryset": {
+    "version": "1.0.0",
+    "dataSources": [
+      {
+        "id": "e0df451a-0293-4200-a6f0-b602b9b54ff4",
+        "clusterUri": "",
+        "type": "Fabric",
+        "databaseItemId": "979d2430-119c-bc3e-421e-9018bdf7c1e1"
+      }
+    ],
+    "tabs": [
+      {
+        "id": "62833ef2-519d-49c3-8fa2-50af366bca74",
+        "content": "bikes\n| where ingestion_time() between (ago(30min) .. now())\n| summarize latest_observation = arg_max(ingestion_time(), *) by Neighbourhood\n| project Neighbourhood, latest_observation, No_Bikes, No_Empty_Docks\n| order by Neighbourhood asc",
+        "title": "Tab",
+        "dataSourceId": "e0df451a-0293-4200-a6f0-b602b9b54ff4"
+      }
+    ],
+    "querysetType": "Standalone"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Eventhouse",
+    "displayName": "eh-bicycles",
+    "description": "eh-bicycles"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4c693d0c-0277-bb7b-4ac2-5c293fbd9af2"
+  }
+}

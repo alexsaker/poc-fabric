@@ -1,0 +1,111 @@
+{
+  "schema_version": 90,
+  "flavor": "RTDashboard_Regular",
+  "changeDetection": {
+    "kind": "liveUpdates",
+    "minRefreshRate": "30s",
+    "fallbackRefreshRate": "1m",
+    "minRefreshRate_V2": "30s"
+  },
+  "tiles": [
+    {
+      "id": "39bd73fb-918b-438b-a345-60990d52ab05",
+      "title": "New Tile",
+      "visualType": "stackedbar",
+      "pageId": "e054b290-d2ad-456c-a7f3-ca0585f1ad85",
+      "layout": {
+        "width": 9,
+        "height": 7,
+        "x": 0,
+        "y": 0
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "0799942c-888d-4b12-9564-3c89b7f53d8d"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "seriesColors": {},
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": "Neighbourhood",
+        "yColumns": [
+          "No_Bikes"
+        ],
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilter": [],
+        "crossFilterDisabled": false,
+        "drillthroughDisabled": false,
+        "forceAxisTicks": false,
+        "drillthrough": [],
+        "selectedDataOnLoad": {
+          "all": true,
+          "limit": 10
+        }
+      }
+    }
+  ],
+  "baseQueries": [],
+  "parameters": [
+    {
+      "kind": "duration",
+      "id": "e511b119-2734-4d16-8e87-f6d62b486a1a",
+      "displayName": "Time range",
+      "description": "",
+      "beginVariableName": "_startTime",
+      "endVariableName": "_endTime",
+      "defaultValue": {
+        "kind": "dynamic",
+        "count": 1,
+        "unit": "hours"
+      },
+      "showOnPages": {
+        "kind": "all"
+      }
+    }
+  ],
+  "dataSources": [
+    {
+      "id": "9b64bc28-3b29-4917-a8a3-d7270771ec6f",
+      "kind": "kusto-trident",
+      "name": "eh-bicycles",
+      "clusterUri": "",
+      "databaseArtifactId": "bdf7c1e1-9018-421e-bc3e-119c979d2430",
+      "database": "979d2430-119c-bc3e-421e-9018bdf7c1e1",
+      "workspace": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+  "pages": [
+    {
+      "name": "Page 1",
+      "id": "e054b290-d2ad-456c-a7f3-ca0585f1ad85"
+    }
+  ],
+  "queries": [
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "9b64bc28-3b29-4917-a8a3-d7270771ec6f"
+      },
+      "text": "bikes\n| where ingestion_time() between (ago(30min) .. now())\n| summarize latest_observation = arg_max(ingestion_time(), *) by Neighbourhood\n| project Neighbourhood, latest_observation, No_Bikes, No_Empty_Docks\n| order by Neighbourhood asc",
+      "id": "0799942c-888d-4b12-9564-3c89b7f53d8d",
+      "usedVariables": []
+    }
+  ],
+  "embeddedApps": []
+}

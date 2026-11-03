@@ -1,0 +1,301 @@
+{
+  "sources": [
+    {
+      "id": "0d8b121b-5a07-4f0f-9698-626c1a7a4e0c",
+      "name": "Bicycles",
+      "type": "SampleData",
+      "properties": {
+        "type": "Bicycles"
+      },
+      "inputSchemas": [
+        {
+          "name": "g2y5e",
+          "schema": {
+            "columns": [
+              {
+                "name": "BikepointID",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Street",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Neighbourhood",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Latitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Longitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Bikes",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Empty_Docks",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "destinations": [
+    {
+      "id": "5e33fc28-ef35-471e-9111-8534a364a25d",
+      "name": "bikes-by-street-table",
+      "type": "Eventhouse",
+      "properties": {
+        "dataIngestionMode": "ProcessedIngestion",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "itemId": "979d2430-119c-bc3e-421e-9018bdf7c1e1",
+        "databaseName": "eh-bicycles",
+        "tableName": "bikes-by-street",
+        "inputSerialization": {
+          "type": "Json",
+          "properties": {
+            "encoding": "UTF8"
+          }
+        }
+      },
+      "inputNodes": [
+        {
+          "name": "GroupByStreet"
+        }
+      ],
+      "inputSchemas": [
+        {
+          "name": "GroupByStreet",
+          "schema": {
+            "columns": [
+              {
+                "name": "Street",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "SUM_No_Bikes",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Window_End_Time",
+                "type": "DateTime",
+                "fields": null,
+                "items": null
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "b6363b3e-7283-42f3-8c7c-d6f4ecf48cbb",
+      "name": "bikes-table",
+      "type": "Eventhouse",
+      "properties": {
+        "dataIngestionMode": "ProcessedIngestion",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "itemId": "979d2430-119c-bc3e-421e-9018bdf7c1e1",
+        "databaseName": "eh-bicycles",
+        "tableName": "bikes",
+        "inputSerialization": {
+          "type": "Json",
+          "properties": {
+            "encoding": "UTF8"
+          }
+        }
+      },
+      "inputNodes": [
+        {
+          "name": "bicycle-data-stream"
+        }
+      ],
+      "inputSchemas": [
+        {
+          "name": "bicycle-data-stream",
+          "schema": {
+            "columns": [
+              {
+                "name": "BikepointID",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Street",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Neighbourhood",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Latitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Longitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Bikes",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Empty_Docks",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "streams": [
+    {
+      "id": "968d21aa-bcb5-4a8c-88c4-5600af919326",
+      "name": "bicycle-data-stream",
+      "type": "DefaultStream",
+      "properties": {},
+      "inputNodes": [
+        {
+          "name": "Bicycles"
+        }
+      ]
+    }
+  ],
+  "operators": [
+    {
+      "name": "GroupByStreet",
+      "type": "GroupBy",
+      "inputNodes": [
+        {
+          "name": "bicycle-data-stream"
+        }
+      ],
+      "properties": {
+        "aggregations": [
+          {
+            "aggregateFunction": "Sum",
+            "arguments": [],
+            "column": {
+              "expressionType": "ColumnReference",
+              "node": null,
+              "columnName": "No_Bikes",
+              "columnPathSegments": []
+            },
+            "alias": "SUM_No_Bikes"
+          }
+        ],
+        "groupBy": [
+          {
+            "expressionType": "ColumnReference",
+            "node": null,
+            "columnName": "Street",
+            "columnPathSegments": []
+          }
+        ],
+        "window": {
+          "type": "Tumbling",
+          "properties": {
+            "duration": {
+              "value": 5,
+              "unit": "Second"
+            },
+            "offset": {
+              "value": 0,
+              "unit": "Second"
+            }
+          }
+        }
+      },
+      "inputSchemas": [
+        {
+          "name": "bicycle-data-stream",
+          "schema": {
+            "columns": [
+              {
+                "name": "BikepointID",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Street",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Neighbourhood",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Latitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Longitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Bikes",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Empty_Docks",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "compatibilityLevel": "1.1"
+}
